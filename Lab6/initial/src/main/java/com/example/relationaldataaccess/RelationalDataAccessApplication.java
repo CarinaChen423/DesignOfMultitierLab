@@ -7,9 +7,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @SpringBootApplication
@@ -34,7 +38,7 @@ public class RelationalDataAccessApplication implements CommandLineRunner {
 				"id SERIAL, first_name VARCHAR(255), last_name VARCHAR(255))");
 
 		// Split up the array of whole names into an array of first/last names
-		List<Object[]> splitUpNames = Arrays.asList("Zhe Chen", "Alice Barber", "Roy Bloch", "Moss Moris").stream()
+		List<Object[]> splitUpNames = Arrays.asList("Zhe Chen", "Alice Barber", "Roy Watson", "Moss Moris", "Zhe Wang").stream()
 				.map(name -> name.split(" "))
 				.collect(Collectors.toList());
 
@@ -47,7 +51,8 @@ public class RelationalDataAccessApplication implements CommandLineRunner {
 		log.info("Querying for customer records where first_name = 'Zhe':");
 		jdbcTemplate.query(
 						"SELECT id, first_name, last_name FROM customers WHERE first_name = ?",
-						(rs, rowNum) -> new Customer(rs.getLong("id"), rs.getString("first_name"), rs.getString("last_name")), "Josh")
+						(rs, rowNum) -> new Customer(rs.getLong("id"), rs.getString("first_name"), rs.getString("last_name")), "Zhe")
 				.forEach(customer -> log.info(customer.toString()));
 	}
+
 }
